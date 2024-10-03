@@ -1,14 +1,9 @@
 const params = new URLSearchParams(window.location.search);
 const username = params.get('user');
-const token = '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'; // Use GitHub token here
 
 async function fetchUserDetails() {
     const url = `https://api.github.com/users/${username}`;
-    const response = await fetch(url, {
-        headers: {
-            'Authorization': `token ${token}` // Add Authorization header
-        }
-    });
+    const response = await fetch(url);
     const user = await response.json();
 
     if (user) {
@@ -26,11 +21,7 @@ async function fetchUserDetails() {
 
 async function fetchUserRepos() {
     const url = `https://api.github.com/users/${username}/repos`;
-    const response = await fetch(url, {
-        headers: {
-            'Authorization': `token ${token}` // Add Authorization header
-        }
-    });
+    const response = await fetch(url);
     const repositories = await response.json();
     
     if (repositories.length > 0) {
@@ -79,7 +70,7 @@ function displayRepositories(repositories) {
         }
         // Display current page
         const currentPageDisplay = document.createElement('div');
-         paginationElement.appendChild(currentPageDisplay);
+        paginationElement.appendChild(currentPageDisplay);
     }
 
     updateRepos(currentPage); // Show initial page
