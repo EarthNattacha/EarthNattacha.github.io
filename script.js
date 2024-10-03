@@ -12,7 +12,6 @@ const randomUsers = [
 let currentPage = 0;
 const usersPerPage = 12; // 4x3
 const suggestionCount = 4;
-const token = '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'; // ใส่ Token ที่สร้างขึ้นที่นี่
 
 // Search function
 async function getUser() {
@@ -29,14 +28,10 @@ async function fetchUsers(username) {
     const url = `https://api.github.com/search/users?q=${username}`;
     
     try {
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `token ${token}` // เพิ่ม Authorization header
-            }
-        });
+        const response = await fetch(url);
         const data = await response.json();
 
-        if (response.ok) { // ตรวจสอบสถานะการตอบกลับ
+        if (response.ok) { 
             if (data.total_count > 0) {
                 displayProfiles(data.items);
             } else {
@@ -59,7 +54,7 @@ async function displayProfiles(users) {
     
     document.getElementById('profile').innerHTML = '';
     for (const user of paginatedUsers) {
-        const repoCount = await fetchRepoCount(user.login); // เรียกจำนวน repository ที่นี่
+        const repoCount = await fetchRepoCount(user.login); 
         document.getElementById('profile').innerHTML += `
             <div class="user">
                 <img src="${user.avatar_url}" alt="${user.login}" class="avatar">
@@ -78,20 +73,16 @@ async function displayProfiles(users) {
 async function fetchRepoCount(username) {
     const url = `https://api.github.com/users/${username}`;
     try {
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `token ${token}` // เพิ่ม Authorization header
-            }
-        });
+        const response = await fetch(url);
         if (!response.ok) {
             console.error('Error fetching user data:', await response.text());
-            return 0; // หากเกิดข้อผิดพลาดให้คืนค่า 0
+            return 0; 
         }
         const userData = await response.json();
         return userData.public_repos; // Return the number of public repositories
     } catch (error) {
         console.error('Error fetching repository count:', error);
-        return 0; // หากเกิดข้อผิดพลาดให้คืนค่า 0
+        return 0; 
     }
 }
 
@@ -125,19 +116,14 @@ function displayRandomUsers() {
     });
 }
 
-/*// Navigate to repository page
-function viewRepository(username) {
-    window.location.href = `repository.html?user=${username}`;
-}
-*/
 // Navigate to repository page
 function viewRepository(username) {
-    window.open(`repository.html?user=${username}`, '_blank'); // เปิดหน้าใหม่
+    window.open(`repository.html?user=${username}`, '_blank'); 
 }
 
 // Navigate to profile page
 function viewProfile(username) {
-    window.open(`https://github.com/${username}`, '_blank'); // Open in a new tab
+    window.open(`https://github.com/${username}`, '_blank'); 
 }
 
 // Initialize the random users display
